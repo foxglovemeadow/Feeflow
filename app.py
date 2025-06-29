@@ -153,6 +153,10 @@ def qr_code():
     buf.seek(0)
 
     return send_file(buf, mimetype='image/png')
+@app.route('/initdb')
+def initialize_database():
+    init_db()
+    return 'Database initialized!'
 
 if __name__ == '__main__':
     init_db()
