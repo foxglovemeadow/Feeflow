@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Sign Up</h2>
+<form method="POST">
+    <label>Username:</label><br>
+    <input type="text" name="username" required><br>
+    <label>Password:</label><br>
+    <input type="password" name="password" required><br><br>
+    <input type="submit" value="Sign Up" class="btn btn-success">
+</form>
+<p>Already have an account? <a href="/login">Login here</a>.</p>
+{% endblock %}
