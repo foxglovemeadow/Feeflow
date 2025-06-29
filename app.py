@@ -6,6 +6,7 @@ import base64
 
 app = Flask(__name__)
 app.secret_key = 'd9f7a4e3bcd2481a8f6e2c5b09a7d3f1'
+
 def init_db():
     conn = sqlite3.connect('school_fees.db')
     c = conn.cursor()
@@ -28,7 +29,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db() 
+init_db()
 
 def get_db_connection():
     conn = sqlite3.connect('school_fees.db')
@@ -144,7 +145,7 @@ def update_payment(student_id):
     conn.close()
     flash('Payment updated successfully.')
     return redirect(url_for('index'))
-    
+
 @app.route('/qr')
 def qr_code():
     app_url = "https://feeflow-track-your-fees.onrender.com"
@@ -156,7 +157,7 @@ def qr_code():
 
 @app.route('/qrpage')
 def qr_page():
-    app_url = "https://your-live-app-url.onrender.com"
+    app_url = "https://feeflow-track-your-fees.onrender.com"
     img = qrcode.make(app_url)
     buf = io.BytesIO()
     img.save(buf, format='PNG')
