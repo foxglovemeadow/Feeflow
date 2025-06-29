@@ -4,8 +4,7 @@ import io
 import qrcode
 
 app = Flask(__name__)
-app.secret_key = 'replace-this-with-a-secret-key'  # Change this to a strong secret key
-
+app.secret_key = 'pL3x!2#Zm0q@rS7&fH9w^vBnDkXyQ8rX'
 def init_db():
     conn = sqlite3.connect('school_fees.db')
     c = conn.cursor()
@@ -145,16 +144,18 @@ def update_payment(student_id):
 
 @app.route('/qr')
 def qr_code():
-    app_url = "https://school-fees-tracker-2.onrender.com"  # Change to your live URL
+    app_url = "https://feeflow.onrender.com"  # <-- Change to your live deployed URL
 
     img = qrcode.make(app_url)
 
     buf = io.BytesIO()
-    img.save(buf, format='PNG')
+    img.save(buf, format='PNG')  # Fixed this line
     buf.seek(0)
 
     return send_file(buf, mimetype='image/png')
 
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True)
+    app.debug = True  # Enable debug for troubleshooting on Render, turn off in production
+    app.run(host='0.0.0.0', port=5000)
+
