@@ -4,9 +4,8 @@ import io
 import qrcode
 
 app = Flask(__name__)
-app.secret_key = 'your-strong-secret-key'  # Replace with a strong, private key
+app.secret_key = 'd9f7a4e3bcd2481a8f6e2c5b09a7d3f1'  
 
-# Initialize DB function
 def init_db():
     conn = sqlite3.connect('school_fees.db')
     c = conn.cursor()
@@ -61,8 +60,8 @@ def signup():
             conn.commit()
             flash('Account created successfully! Please log in.')
             return redirect(url_for('login'))
-        except sqlite3.IntegrityError:
-            flash('Username already exists.')
+        except Exception as e:
+            flash(f'Signup failed: {e}')
             return redirect(url_for('signup'))
         finally:
             conn.close()
@@ -146,18 +145,15 @@ def update_payment(student_id):
 
 @app.route('/qr')
 def qr_code():
-    app_url = "https://feeflow-track-your-fees.onrender.com"
+    app_url = "https://your-live-app-url.onrender.com"  # Change to your live URL
+
     img = qrcode.make(app_url)
+
     buf = io.BytesIO()
     img.save(buf, format='PNG')
     buf.seek(0)
-    return send_file(buf, mimetype='image/png')
 
-# 🔧 Temporary route to initialize the database on Render
-@app.route('/init')
-def initialize_database():
-    init_db()
-    return "Database initialized!"
+    return send_file(buf, mimetype='image/png')
 
 if __name__ == '__main__':
     init_db()
