@@ -4,7 +4,9 @@ import io
 import qrcode
 
 app = Flask(__name__)
-app.secret_key = 'pL3x!2#Zm0q@rS7&fH9w^vBnDkXyQ8rX'
+app.secret_key = 'your-strong-secret-key'  # Replace with a strong, private key
+
+# Initialize DB function
 def init_db():
     conn = sqlite3.connect('school_fees.db')
     c = conn.cursor()
@@ -144,22 +146,19 @@ def update_payment(student_id):
 
 @app.route('/qr')
 def qr_code():
-    app_url = "https://feeflow.onrender.com"  # <-- Change to your live deployed URL
-
+    app_url = "https://feeflow-track-your-fees.onrender.com"
     img = qrcode.make(app_url)
-
     buf = io.BytesIO()
-    img.save(buf, format='PNG')  # Fixed this line
+    img.save(buf, format='PNG')
     buf.seek(0)
-
     return send_file(buf, mimetype='image/png')
-@app.route('/initdb')
+
+# 🔧 Temporary route to initialize the database on Render
+@app.route('/init')
 def initialize_database():
     init_db()
-    return 'Database initialized!'
+    return "Database initialized!"
 
 if __name__ == '__main__':
     init_db()
-    app.debug = True  # Enable debug for troubleshooting on Render, turn off in production
-    app.run(host='0.0.0.0', port=5000)
-
+    app.run(debug=True)
